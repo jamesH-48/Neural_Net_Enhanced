@@ -147,7 +147,7 @@ class NeuralNet:
 
     # Below is the training function
 
-    def train(self, max_iterations, learning_rate):
+    def train(self, max_iterations):
         # We don't use learning rate from the function
 
         # Adam Optimizer Variables
@@ -382,21 +382,20 @@ if __name__ == "__main__":
     seed(s2)
     randseed = randint(0,1000)
     max_iterations = 8000
-    LR = .001
     testsize = .1
     h1 = 4
     h2 = 12
 
     # Train Sigmoid Model
     neural_network_sigmoid = NeuralNet("train.csv", "sigmoid", state, randseed, h1, h2, testsize)
-    err_sigmoid = neural_network_sigmoid.train(max_iterations, LR)
+    err_sigmoid = neural_network_sigmoid.train(max_iterations)
 
     # Train ReLu Model
     neural_network_relu = NeuralNet("train.csv", "relu", state, randseed, h1, h2, testsize)
-    err_relu = neural_network_relu.train(max_iterations, LR)
+    err_relu = neural_network_relu.train(max_iterations)
     # Train Tanh Model
     neural_network_tanh = NeuralNet("train.csv", "tanh", state, randseed, h1, h2, testsize)
-    err_tanh = neural_network_tanh.train(max_iterations, LR)
+    err_tanh = neural_network_tanh.train(max_iterations)
 
     print("err s:\n", err_sigmoid)
     print("err r:\n", err_relu)
