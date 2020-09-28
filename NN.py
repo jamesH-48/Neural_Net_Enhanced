@@ -30,15 +30,13 @@ from sklearn.model_selection import train_test_split
 class NeuralNet:
     def __init__(self, dataFile, activation, state, randseed, h1, h2, testsize, header=True):
         self.activation = activation
-        #np.random.seed(1)
+
         # train refers to the training dataset
         # test refers to the testing dataset
         # h represents the number of neurons in the hidden layer
-        #raw_input = pd.read_csv(dataFile)
-        #url = "https://raw.githubusercontent.com/jamesH-48/Neural-Network-A2/master/smalltest.csv"
-        #url = "https://raw.githubusercontent.com/jamesH-48/Neural-Network-A2/master/EEG%20Eye%20State.csv"
-        url = "https://raw.githubusercontent.com/jamesH-48/Neural-Network-A2/master/balance-scale-1.csv"
-        raw_input = pd.read_csv(url, header=0)
+
+        url = "https://raw.githubusercontent.com/jamesH-48/Neural_Net_Enhanced/master/abalone.csv"
+        raw_input = pd.read_csv(url, header=0, sep=',')
         # TODO: Remember to implement the preprocess method
         proc_X, proc_y = self.preprocess(raw_input)
 
@@ -131,19 +129,20 @@ class NeuralNet:
     #
 
     def preprocess(self, data):
-        newdataX = data[["LW","LD","RW","RD"]]
-        newdataY = data[["Class"]]
-        columnsY = ['L','B','R']
+        newdataX = data[["Length","Diameter","Height","Whole Weight","Shucked Weight",
+                         "Viscera Weight", "Shell Weight", "Rings"]]
+        newdataY = data[["Sex"]]
+        columnsY = ['M','F','I']
         y_df = pd.DataFrame(columns=columnsY)
         y_df.loc[0] = (0,0,1)
         for i in range(len(newdataY)):
-            if newdataY.Class[i] == 'L':
+            if newdataY.Sex[i] == 'M':
                 y_df.loc[i] = (1,0,0)
-            if newdataY.Class[i] == 'B':
+            if newdataY.Sex[i] == 'F':
                 y_df.loc[i] = (0, 1, 0)
-            if newdataY.Class[i] == 'R':
+            if newdataY.Sex[i] == 'I':
                 y_df.loc[i] = (0, 0, 1)
-
+        #print(y_df.head(10))
         return newdataX, y_df
 
     # Below is the training function
@@ -220,13 +219,13 @@ class NeuralNet:
 
         print("Activation Function: ", self.activation)
         print("After " + str(max_iterations) + " iterations, the total error is " + str(np.sum(error)))
-        print("The final weight vectors are (starting from input to output layers) \n" + str(self.W_hidden1))
-        print("The final weight vectors are (starting from input to output layers) \n" + str(self.W_hidden2))
-        print("The final weight vectors are (starting from input to output layers) \n" + str(self.W_output))
+        #print("The final weight vectors are (starting from input to output layers) \n" + str(self.W_hidden1))
+        #print("The final weight vectors are (starting from input to output layers) \n" + str(self.W_hidden2))
+        #print("The final weight vectors are (starting from input to output layers) \n" + str(self.W_output))
 
-        print("The final bias vectors are (starting from input to output layers) \n" + str(self.Wb_hidden1))
-        print("The final bias vectors are (starting from input to output layers) \n" + str(self.Wb_hidden2))
-        print("The final bias vectors are (starting from input to output layers) \n" + str(self.Wb_output) + "\n")
+        #print("The final bias vectors are (starting from input to output layers) \n" + str(self.Wb_hidden1))
+        #print("The final bias vectors are (starting from input to output layers) \n" + str(self.Wb_hidden2))
+        #print("The final bias vectors are (starting from input to output layers) \n" + str(self.Wb_output) + "\n")
         return errGraph
 
     def forward_pass(self, activation):
@@ -345,6 +344,7 @@ class NeuralNet:
         outputs = self.forward_test(activation, "train")
         print("Train Accuracy Results for ", activation, " activation function:")
         correct = 0
+
         if len(outputs) == len(self.y):
             for i in range(len(outputs)):
                 # Both Outputs have to match
@@ -375,21 +375,22 @@ class NeuralNet:
 if __name__ == "__main__":
     # Initialize Variables
     # Randomly Generate State for Train/Test Split
-    s1 = 3
+    s1 = 124
     seed(s1)
     state = randint(0,1000)
-    s2 = 8
+    s2 = 347
     seed(s2)
     randseed = randint(0,1000)
     max_iterations = 8000
     LR = .001
     testsize = .1
-    h1 = 6
-    h2 = 4
+    h1 = 4
+    h2 = 12
 
     # Train Sigmoid Model
     neural_network_sigmoid = NeuralNet("train.csv", "sigmoid", state, randseed, h1, h2, testsize)
     err_sigmoid = neural_network_sigmoid.train(max_iterations, LR)
+
     # Train ReLu Model
     neural_network_relu = NeuralNet("train.csv", "relu", state, randseed, h1, h2, testsize)
     err_relu = neural_network_relu.train(max_iterations, LR)
