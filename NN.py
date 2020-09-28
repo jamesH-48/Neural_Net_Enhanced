@@ -401,8 +401,8 @@ if __name__ == "__main__":
     print("err r:\n", err_relu)
     print("err t:\n", err_tanh)
 
-    print("Iterations|   LR|Test Size|Seed1|Seed2|state|Randseed|h1|h2|")
-    print("      {itr}|{LR}|      {ts}|   {seed1}|{seed2}| {state}| {rs}| {h1}| {h2}|".format(itr = max_iterations, LR = LR, ts = testsize, seed1=s1, seed2=s2,rs = randseed,state=state,h1=h1,h2=h2))
+    print("Iterations|Test Size|Seed1|Seed2|state|Randseed|h1|h2|")
+    print("      {itr}|    {ts}|   {seed1}|{seed2}| {state}| {rs}| {h1}| {h2}|".format(itr = max_iterations, ts = testsize, seed1=s1, seed2=s2,rs = randseed,state=state,h1=h1,h2=h2))
     print()
     # Print Out Test Error for Each Model
     neural_network_sigmoid.predict("sigmoid")
