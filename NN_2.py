@@ -38,11 +38,6 @@ class NeuralNet:
         #url = "https://raw.githubusercontent.com/jamesH-48/Neural_Net_Enhanced/master/abalone.csv"
         url = "https://raw.githubusercontent.com/jamesH-48/Neural_Net_Enhanced/master/data_banknote_authentication.csv"
         raw_input = pd.read_csv(url, header=0, sep=',')
-        # Shuffle rows since the classes are evenly split
-        # Mostly a sanity check
-        # We just re-use randseed here for ease of use
-        raw_input = raw_input.sample(frac = 1, random_state=randseed)
-        # print(raw_input)
 
         # TODO: Remember to implement the preprocess method
         proc_X, proc_y = self.preprocess(raw_input)
@@ -55,6 +50,7 @@ class NeuralNet:
         self.Xnp = self.Xnp.astype(float)
         self.Ynp = self.Ynp.astype(float)
 
+        # Train-Test-Split already shuffles the data inherently
         self.X, self.Xtest, self.y, self.ytest = train_test_split(self.Xnp,self.Ynp,test_size=testsize,random_state=state)
 
         #
@@ -147,7 +143,7 @@ class NeuralNet:
                 y_df.loc[i] = (0, 1)
             if newdataY.Class[i] == 1:
                 y_df.loc[i] = (1, 0)
-        # print(y_df.head(10))
+        # print(y_df.tail(10))
 
         return newdataX, y_df
 
@@ -358,7 +354,7 @@ class NeuralNet:
                 if np.around(outputs[i,0]) == self.y[i,0]:
                     if np.around(outputs[i, 1]) == self.y[i, 1]:
                         # print("out:", np.around(outputs[i,0]), np.around(outputs[i,1]), "actual:",self.y[i,0], self.y[i,1])
-                        print("out:", outputs[i, 0], outputs[i, 1], "actual:", self.y[i, 0], self.y[i, 1])
+                        # print("out:", outputs[i, 0], outputs[i, 1], "actual:", self.y[i, 0], self.y[i, 1])
                         correct += 1
             print("Percent Correct: ", (correct/len(outputs))*100, "%")
             print("Mean Squared Error: ", np.around((np.sum(0.5 * np.power((outputs - self.y), 2))), decimals=8))
@@ -372,7 +368,7 @@ class NeuralNet:
                 if np.around(outputs[i, 0]) == self.ytest[i, 0]:
                     if np.around(outputs[i, 1]) == self.ytest[i, 1]:
                         # print("out:", np.around(outputs[i,0]), np.around(outputs[i,1]), "actual:",self.ytest[i,0], self.ytest[i,1])
-                        print("out:", outputs[i,0], outputs[i,1], "actual:",self.ytest[i,0], self.ytest[i,1])
+                        # print("out:", outputs[i,0], outputs[i,1], "actual:",self.ytest[i,0], self.ytest[i,1])
                         correct += 1
             print("Percent Correct: ", (correct/len(outputs))*100, "%")
             print("Mean Squared Error: ", np.around((np.sum(0.5 * np.power((outputs - self.ytest), 2))), decimals=8), "\n")
@@ -381,16 +377,16 @@ class NeuralNet:
 if __name__ == "__main__":
     # Initialize Variables
     # Randomly Generate State for Train/Test Split
-    s1 = 547
+    s1 = 124
     seed(s1)
     state = randint(0,1000)
-    s2 = 597
+    s2 = 347
     seed(s2)
     randseed = randint(0,1000)
-    max_iterations = 1000
-    testsize = .2
+    max_iterations = 8000
+    testsize = .1
     h1 = 2
-    h2 = 2
+    h2 = 4
 
     # Train Sigmoid Model
     neural_network_sigmoid = NeuralNet("train.csv", "sigmoid", state, randseed, h1, h2, testsize)
@@ -403,9 +399,9 @@ if __name__ == "__main__":
     neural_network_tanh = NeuralNet("train.csv", "tanh", state, randseed, h1, h2, testsize)
     err_tanh = neural_network_tanh.train(max_iterations)
 
-    print("err s:\n", err_sigmoid)
-    print("err r:\n", err_relu)
-    print("err t:\n", err_tanh)
+    # print("err s:\n", err_sigmoid)
+    # print("err r:\n", err_relu)
+    # print("err t:\n", err_tanh)
 
     print("Iterations|Test Size|Seed1|Seed2|state|Randseed|h1|h2|")
     print("      {itr}|    {ts}|   {seed1}|{seed2}| {state}| {rs}| {h1}| {h2}|".format(itr = max_iterations, ts = testsize, seed1=s1, seed2=s2,rs = randseed,state=state,h1=h1,h2=h2))
