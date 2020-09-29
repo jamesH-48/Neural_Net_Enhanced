@@ -377,10 +377,10 @@ class NeuralNet:
 if __name__ == "__main__":
     # Initialize Variables
     # Randomly Generate State for Train/Test Split
-    s1 = 124
+    s1 = 456
     seed(s1)
     state = randint(0,1000)
-    s2 = 347
+    s2 = 547
     seed(s2)
     randseed = randint(0,1000)
     max_iterations = 8000
