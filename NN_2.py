@@ -38,6 +38,12 @@ class NeuralNet:
         #url = "https://raw.githubusercontent.com/jamesH-48/Neural_Net_Enhanced/master/abalone.csv"
         url = "https://raw.githubusercontent.com/jamesH-48/Neural_Net_Enhanced/master/data_banknote_authentication.csv"
         raw_input = pd.read_csv(url, header=0, sep=',')
+        # Shuffle rows since the classes are evenly split
+        # Mostly a sanity check
+        # We just re-use randseed here for ease of use
+        raw_input = raw_input.sample(frac = 1, random_state=randseed)
+        # print(raw_input)
+
         # TODO: Remember to implement the preprocess method
         proc_X, proc_y = self.preprocess(raw_input)
 
@@ -375,10 +381,10 @@ class NeuralNet:
 if __name__ == "__main__":
     # Initialize Variables
     # Randomly Generate State for Train/Test Split
-    s1 = 124
+    s1 = 547
     seed(s1)
     state = randint(0,1000)
-    s2 = 347
+    s2 = 597
     seed(s2)
     randseed = randint(0,1000)
     max_iterations = 1000
