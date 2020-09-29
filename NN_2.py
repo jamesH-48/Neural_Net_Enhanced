@@ -399,9 +399,9 @@ if __name__ == "__main__":
     neural_network_tanh = NeuralNet("train.csv", "tanh", state, randseed, h1, h2, testsize)
     err_tanh = neural_network_tanh.train(max_iterations)
 
-    # print("err s:\n", err_sigmoid)
-    # print("err r:\n", err_relu)
-    # print("err t:\n", err_tanh)
+    print("err s:\n", err_sigmoid)
+    print("err r:\n", err_relu)
+    print("err t:\n", err_tanh)
 
     print("Iterations|Test Size|Seed1|Seed2|state|Randseed|h1|h2|")
     print("      {itr}|    {ts}|   {seed1}|{seed2}| {state}| {rs}| {h1}| {h2}|".format(itr = max_iterations, ts = testsize, seed1=s1, seed2=s2,rs = randseed,state=state,h1=h1,h2=h2))
